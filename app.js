@@ -16,11 +16,22 @@ bot.onText(/\/start/, (msg) => {
     });
 });
 
-bot.onText(/get question/, (msg) => {
+bot.onText(/get question/, async (msg) => {
     const chatId = msg.chat.id;
     const number = Math.floor(Math.random()*allQuiz.length);
     console.log('number: ', number);
     console.log('rnadom quiz');
     console.log(allQuiz[number]);
-    bot.sendMessage(chatId, "RANDOM");
+    await bot.sendMessage(chatId, allQuiz[number]['question'], {parse_mode : "Markdown"});
+
+    const jsCode = allQuiz[number]['jsCode'];
+    if (jsCode) {
+        await bot.sendMessage(chatId, jsCode, {parse_mode : "Markdown"});
+    }
+
+    await bot.sendMessage(chatId, "Welcome", {
+        "reply_markup": {
+            "keyboard": [...allQuiz[number]['answerVariants'].map(answ => [answ]), ["get question"]]
+        }
+    });
 });

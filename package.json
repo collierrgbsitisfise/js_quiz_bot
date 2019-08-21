@@ -16,5 +16,7 @@
     "url": "https://github.com/collierrgbsitisfise/js_quiz_bot/issues"
   },
   "homepage": "https://github.com/collierrgbsitisfise/js_quiz_bot#readme",
-  "dependencies": {}
+  "dependencies": {
+    "node-telegram-bot-api": "^0.30.0"
+  }
 }

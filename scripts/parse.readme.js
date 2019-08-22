@@ -4,25 +4,28 @@ const markDownData = String(fs.readFileSync('js-questions.md'));
 
 const data = markDownData.split('---');
 
-const regExpForJSCode = /\```javascript\n(((?:\r|\n|.)+))\```/g
+const regExpForJSCode = /\```(javascript|html)\n(((?:\r|\n|.)+))\```/g
 const regExpForQuestion = /[\.\s](((?:\r|.)+))\n/g;
 const regExpDetailsText = /<details>(((?:\r|\n|.)+))<\/details>/g;
 const regExpasnwerEXplanation = /<p>(((?:\r|\n|.)+))<\/p>/g;
+const regExpToGetPartBetweenQuestionAndAnswer = /######(((?:\r|\n|.)+))Answer:/g
 
 data.shift();
 
-const parsed = data.map(d => {
+const parsed = data.map((d, idx) => {
     const matchQuestion = d.match(regExpForQuestion);
-    const matchesJSCODE = d.match(regExpForJSCode);
+    const textBetweenQuestionAndAnswer = d.match(regExpToGetPartBetweenQuestionAndAnswer);
+    console.log(textBetweenQuestionAndAnswer);
+    const matchesJSCODE = textBetweenQuestionAndAnswer[0].match(regExpForJSCode);
 
+    if (idx === 58) {
+        console.log(matchesJSCODE);
+    }
     const dataSplitedByNewLine = d.split('\n');
     const answerVariants = dataSplitedByNewLine.filter(line => {
         const regExp = new RegExp("^(- [A|B|C|D])", "i");
         return regExp.test(line);
     });
-
-    console.log('Answer variants');
-    console.log(answerVariants);
 
     const matchAnseer = dataSplitedByNewLine.filter(line => line.includes('Answer:'));
     const detailsText = d.match(regExpDetailsText);

@@ -124,7 +124,7 @@
       "- D: `undefined` `undefined`"
     ],
     "question": "\n###### 11. What's the output?\n",
-    "jsCode": "```javascript\nfunction Person(firstName, lastName) {\n  this.firstName = firstName;\n  this.lastName = lastName;\n}\n\nconst member = new Person(\"Lydia\", \"Hallie\");\nPerson.getFullName = function() {\n  return `${this.firstName} ${this.lastName}`;\n};\n\nconsole.log(member.getFullName());\n```\n\n- A: `TypeError`\n- B: `SyntaxError`\n- C: `Lydia Hallie`\n- D: `undefined` `undefined`\n\n<details><summary><b>Answer</b></summary>\n<p>\n\n#### Answer: A\n\nYou can't add properties to a constructor like you can with regular objects. If you want to add a feature to all objects at once, you have to use the prototype instead. So in this case,\n\n```js\nPerson.prototype.getFullName = function() {\n  return `${this.firstName} ${this.lastName}`;\n};\n```",
+    "jsCode": "```javascript\nfunction Person(firstName, lastName) {\n  this.firstName = firstName;\n  this.lastName = lastName;\n}\n\nconst member = new Person(\"Lydia\", \"Hallie\");\nPerson.getFullName = function() {\n  return `${this.firstName} ${this.lastName}`;\n};\n\nconsole.log(member.getFullName());\n```",
     "answer": "#### Answer: A",
     "explanation": "<p>\n\n#### Answer: A\n\nYou can't add properties to a constructor like you can with regular objects. If you want to add a feature to all objects at once, you have to use the prototype instead. So in this case,\n\n```js\nPerson.prototype.getFullName = function() {\n  return `${this.firstName} ${this.lastName}`;\n};\n```\n\nwould have made `member.getFullName()` work. Why is this beneficial? Say that we added this method to the constructor itself. Maybe not every `Person` instance needed this method. This would waste a lot of memory space, since they would still have that property, which takes of memory space for each instance. Instead, if we only add it to the prototype, we just have it at one spot in memory, yet they all have access to it!\n\n</p>"
   },
@@ -352,7 +352,7 @@
       "- D: An array of all nested elements."
     ],
     "question": "\n###### 31. What is the event.target when clicking the button?\n",
-    "jsCode": null,
+    "jsCode": "```html\n<div onclick=\"console.log('first div')\">\n  <div onclick=\"console.log('second div')\">\n    <button onclick=\"console.log('button')\">\n      Click!\n    </button>\n  </div>\n</div>\n```",
     "answer": "#### Answer: C",
     "explanation": "<p>\n\n#### Answer: C\n\nThe deepest nested element that caused the event is the target of the event. You can stop bubbling by `event.stopPropagation`\n\n</p>"
   },
@@ -364,7 +364,7 @@
       "- D: `div`"
     ],
     "question": "\n###### 32. When you click the paragraph, what's the logged output?\n",
-    "jsCode": null,
+    "jsCode": "```html\n<div onclick=\"console.log('div')\">\n  <p onclick=\"console.log('p')\">\n    Click here!\n  </p>\n</div>\n```",
     "answer": "#### Answer: A",
     "explanation": "<p>\n\n#### Answer: A\n\nIf we click `p`, we see two logs: `p` and `div`. During event propagation, there are 3 phases: capturing, target, and bubbling. By default, event handlers are executed in the bubbling phase (unless you set `useCapture` to `true`). It goes from the deepest nested element outwards.\n\n</p>"
   },
@@ -623,7 +623,7 @@
       "- D: `\"number\", \"undefined\"`"
     ],
     "question": "\n###### 54. What's the output?\n",
-    "jsCode": "```javascript\n(() => {\n  let x = (y = 10);\n})();\n\nconsole.log(typeof x);\nconsole.log(typeof y);\n```\n\n- A: `\"undefined\", \"number\"`\n- B: `\"number\", \"number\"`\n- C: `\"object\", \"number\"`\n- D: `\"number\", \"undefined\"`\n\n<details><summary><b>Answer</b></summary>\n<p>\n\n#### Answer: A\n\n`let x = y = 10;` is actually shorthand for:\n\n```javascript\ny = 10;\nlet x = y;\n```",
+    "jsCode": "```javascript\n(() => {\n  let x = (y = 10);\n})();\n\nconsole.log(typeof x);\nconsole.log(typeof y);\n```",
     "answer": "#### Answer: A",
     "explanation": "<p>\n\n#### Answer: A\n\n`let x = y = 10;` is actually shorthand for:\n\n```javascript\ny = 10;\nlet x = y;\n```\n\nWhen we set `y` equal to `10`, we actually add a property `y` to the global object (`window` in browser, `global` in Node). In a browser, `window.y` is now equal to `10`.\n\nThen, we declare a variable `x` with the value of `y`, which is `10`. Variables declared with the `let` keyword are _block scoped_, they are only defined within the block they're declared in; the immediately-invoked function (IIFE) in this case. When we use the `typeof` operator, the operand `x` is not defined: we are trying to access `x` outside of the block it's declared in. This means that `x` is not defined. Values who haven't been assigned a value or declared are of type `\"undefined\"`. `console.log(typeof x)` returns `\"undefined\"`.\n\nHowever, we created a global variable `y` when setting `y` equal to `10`. This value is accessible anywhere in our code. `y` is defined, and holds a value of type `\"number\"`. `console.log(typeof y)` returns `\"number\"`.\n\n</p>"
   },
@@ -678,7 +678,7 @@
       "- D: `[1]`"
     ],
     "question": "\n###### 59. What's the output?\n",
-    "jsCode": "```javascript\nconst numbers = [1, 2, 3, 4, 5];\nconst [y] = numbers;\n\nconsole.log(y);\n```\n\n- A: `[[1, 2, 3, 4, 5]]`\n- B: `[1, 2, 3, 4, 5]`\n- C: `1`\n- D: `[1]`\n\n<details><summary><b>Answer</b></summary>\n<p>\n\n#### Answer: C\n\nWe can unpack values from arrays or properties from objects through destructuring. For example:\n\n```javascript\n[a, b] = [1, 2];\n```\n\n<img src=\"https://i.imgur.com/ADFpVop.png\" width=\"200\">\n\nThe value of `a` is now `1`, and the value of `b` is now `2`. What we actually did in the question, is:\n\n```javascript\n[y] = [1, 2, 3, 4, 5];\n```",
+    "jsCode": "```javascript\nconst numbers = [1, 2, 3, 4, 5];\nconst [y] = numbers;\n\nconsole.log(y);\n```",
     "answer": "#### Answer: C",
     "explanation": "<p>\n\n#### Answer: C\n\nWe can unpack values from arrays or properties from objects through destructuring. For example:\n\n```javascript\n[a, b] = [1, 2];\n```\n\n<img src=\"https://i.imgur.com/ADFpVop.png\" width=\"200\">\n\nThe value of `a` is now `1`, and the value of `b` is now `2`. What we actually did in the question, is:\n\n```javascript\n[y] = [1, 2, 3, 4, 5];\n```\n\n<img src=\"https://i.imgur.com/NzGkMNk.png\" width=\"200\">\n\nThis means that the value of `y` is equal to the first value in the array, which is the number `1`. When we log `y`, `1` is returned.\n\n</p>"
   },
@@ -1040,7 +1040,7 @@
       "- D: `\"string\"`"
     ],
     "question": "\n###### 90. What's the output?\n",
-    "jsCode": "```javascript\nclass Person {\n  constructor(name) {\n    this.name = name\n  }\n}\n\nconst member = new Person(\"John\")\nconsole.log(typeof member)\n```\n\n- A: `\"class\"`\n- B: `\"function\"`\n- C: `\"object\"`\n- D: `\"string\"`\n\n<details><summary><b>Answer</b></summary>\n<p>\n\n#### Answer: C\n\nClasses are syntactical sugar for function constructors. The equivalent of the `Person` class as a function constructor would be:\n\n```javascript\nfunction Person() {\n  this.name = name\n}\n```",
+    "jsCode": "```javascript\nclass Person {\n  constructor(name) {\n    this.name = name\n  }\n}\n\nconst member = new Person(\"John\")\nconsole.log(typeof member)\n```",
     "answer": "#### Answer: C",
     "explanation": "<p>\n\n#### Answer: C\n\nClasses are syntactical sugar for function constructors. The equivalent of the `Person` class as a function constructor would be:\n\n```javascript\nfunction Person() {\n  this.name = name\n}\n```\n\nCalling a function constructor with `new` results in the creation of an instance of `Person`, `typeof` keyword returns `\"object\"` for an instance. `typeof member` returns `\"object\"`. \n\n</p>"
   },
@@ -1088,7 +1088,7 @@
       "- D: `SyntaxError`"
     ],
     "question": "\n###### 94. What's the output?\n",
-    "jsCode": "```javascript\nfunction getItems(fruitList, ...args, favoriteFruit) {\n  return [...fruitList, ...args, favoriteFruit]\n}\n\ngetItems([\"banana\", \"apple\"], \"pear\", \"orange\")\n```\n\n- A: `[\"banana\", \"apple\", \"pear\", \"orange\"]`\n- B: `[[\"banana\", \"apple\"], \"pear\", \"orange\"]` \n- C: `[\"banana\", \"apple\", [\"pear\"], \"orange\"]`\n- D: `SyntaxError`\n\n<details><summary><b>Answer</b></summary>\n<p>\n\n#### Answer: D\n\n`...args` is a rest parameter. The rest parameter's value is an array containing all remaining arguments, **and can only be the last parameter**! In this example, the rest parameter was the second parameter. This is not possible, and will throw a syntax error. \n\n```javascript\nfunction getItems(fruitList, favoriteFruit, ...args) {\n  return [...fruitList, ...args, favoriteFruit]\n}\n\ngetItems([\"banana\", \"apple\"], \"pear\", \"orange\")\n```",
+    "jsCode": "```javascript\nfunction getItems(fruitList, ...args, favoriteFruit) {\n  return [...fruitList, ...args, favoriteFruit]\n}\n\ngetItems([\"banana\", \"apple\"], \"pear\", \"orange\")\n```",
     "answer": "#### Answer: D",
     "explanation": "<p>\n\n#### Answer: D\n\n`...args` is a rest parameter. The rest parameter's value is an array containing all remaining arguments, **and can only be the last parameter**! In this example, the rest parameter was the second parameter. This is not possible, and will throw a syntax error. \n\n```javascript\nfunction getItems(fruitList, favoriteFruit, ...args) {\n  return [...fruitList, ...args, favoriteFruit]\n}\n\ngetItems([\"banana\", \"apple\"], \"pear\", \"orange\")\n```\n\nThe above example works. This returns the array `[ 'banana', 'apple', 'orange', 'pear' ]`\n</p>"
   },
@@ -1100,7 +1100,7 @@
       "- D: `SyntaxError`"
     ],
     "question": "\n###### <a name=20190817></a>95. What's the output?\n",
-    "jsCode": "```javascript\nfunction nums(a, b) {\n  if\n  (a > b)\n  console.log('a is bigger')\n  else \n  console.log('b is bigger')\n  return \n  a + b\n}\n\nconsole.log(nums(4, 2))\nconsole.log(nums(1, 2))\n```\n\n- A: `a is bigger`, `6` and `b is bigger`, `3`\n- B: `a is bigger`, `undefined` and `b is bigger`, `undefined`\n- C: `undefined` and `undefined`\n- D: `SyntaxError`\n\n<details><summary><b>Answer</b></summary>\n<p>\n\n#### Answer: B\n\nIn JavaScript, we don't _have_ to write the semicolon (`;`) explicitly, however the JavaScript engine still adds them after statements. This is called **Automatic Semicolon Insertion**. A statement can for example be variables, or keywords like `throw`, `return`, `break`, etc. \n\nHere, we wrote a `return` statement, and another value `a + b` on a _new line_. However, since it's a new line, the engine doesn't know that it's actually the value that we wanted to return. Instead, it automatically added a semicolon after `return`. You could see this as:\n\n```javascript\n  return;\n  a + b\n```",
+    "jsCode": "```javascript\nfunction nums(a, b) {\n  if\n  (a > b)\n  console.log('a is bigger')\n  else \n  console.log('b is bigger')\n  return \n  a + b\n}\n\nconsole.log(nums(4, 2))\nconsole.log(nums(1, 2))\n```",
     "answer": "#### Answer: B",
     "explanation": "<p>\n\n#### Answer: B\n\nIn JavaScript, we don't _have_ to write the semicolon (`;`) explicitly, however the JavaScript engine still adds them after statements. This is called **Automatic Semicolon Insertion**. A statement can for example be variables, or keywords like `throw`, `return`, `break`, etc. \n\nHere, we wrote a `return` statement, and another value `a + b` on a _new line_. However, since it's a new line, the engine doesn't know that it's actually the value that we wanted to return. Instead, it automatically added a semicolon after `return`. You could see this as:\n\n```javascript\n  return;\n  a + b\n```\n\nThis means that `a + b` is never reached, since a function stops running after the `return` keyword. If no value gets returned, like here, the function returns `undefined`. Note that there is no automatic insertion after `if/else` statements!\n\n</p>"
   },
@@ -1136,7 +1136,7 @@
       "- D: `Error` and `{ name: \"Lydia\", age: 21 }`"
     ],
     "question": "\n###### 98. What's the output?\n",
-    "jsCode": "```javascript\nconst getList = ([x, ...y]) => [x, y]\nconst getUser = user => { name: user.name, age: user.age }\n\nconst list = [1, 2, 3, 4]\nconst user = { name: \"Lydia\", age: 21 }\n\nconsole.log(getList(list))\nconsole.log(getUser(user))\n```\n\n- A: `[1, [2, 3, 4]]` and `undefined`\n- B: `[1, [2, 3, 4]]` and `{ name: \"Lydia\", age: 21 }`\n- C: `[1, 2, 3, 4]` and `{ name: \"Lydia\", age: 21 }`\n- D: `Error` and `{ name: \"Lydia\", age: 21 }`\n\n<details><summary><b>Answer</b></summary>\n<p>\n\n#### Answer: A\n\nThe `getList` function receives an array as its argument. Between the parentheses of the `getList` function, we destructure this array right away. You could see this as:\n\n `[x, ...y] = [1, 2, 3, 4]`\n\n With the rest parameter `...y`, we put all \"remaining\" arguments in an array. The remaining arguments are `2`, `3` and `4` in this case. The value of `y` is an array, containig all the rest parameters. The value of `x` is equal to `1` in this case, so when we log `[x, y]`, `[1, [2, 3, 4]]` gets logged.\n\n The `getUser` function receives an object. With arrow functions, we don't _have_ to write curly brackets if we just return one value. However, if you want to return an _object_ from an arrow function, you have to write it between parentheses, otherwise no value gets returned! The following function would have returned an object:\n\n```const getUser = user => ({ name: user.name, age: user.age })```",
+    "jsCode": "```javascript\nconst getList = ([x, ...y]) => [x, y]\nconst getUser = user => { name: user.name, age: user.age }\n\nconst list = [1, 2, 3, 4]\nconst user = { name: \"Lydia\", age: 21 }\n\nconsole.log(getList(list))\nconsole.log(getUser(user))\n```",
     "answer": "#### Answer: A",
     "explanation": "<p>\n\n#### Answer: A\n\nThe `getList` function receives an array as its argument. Between the parentheses of the `getList` function, we destructure this array right away. You could see this as:\n\n `[x, ...y] = [1, 2, 3, 4]`\n\n With the rest parameter `...y`, we put all \"remaining\" arguments in an array. The remaining arguments are `2`, `3` and `4` in this case. The value of `y` is an array, containig all the rest parameters. The value of `x` is equal to `1` in this case, so when we log `[x, y]`, `[1, [2, 3, 4]]` gets logged.\n\n The `getUser` function receives an object. With arrow functions, we don't _have_ to write curly brackets if we just return one value. However, if you want to return an _object_ from an arrow function, you have to write it between parentheses, otherwise no value gets returned! The following function would have returned an object:\n\n```const getUser = user => ({ name: user.name, age: user.age })```\n\nSince no value gets returned in this case, the function returns `undefined`.\n\n</p>"
   },

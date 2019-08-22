@@ -29,9 +29,13 @@ bot.onText(/get question/, async (msg) => {
         await bot.sendMessage(chatId, jsCode, {parse_mode : "Markdown"});
     }
 
+    for (let varaint of allQuiz[number]['answerVariants']) {
+        await bot.sendMessage(chatId, varaint, {parse_mode : "Markdown"});
+    }
+
     await bot.sendMessage(chatId, "Welcome", {
         "reply_markup": {
-            "keyboard": [...allQuiz[number]['answerVariants'].map(answ => [answ]), ["get question"]]
+            "keyboard": [allQuiz[number]['answerVariants'].map(answ => answ.split(':').shift()), ["get question"]]
         }
     });
 });

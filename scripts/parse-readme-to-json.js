@@ -1,6 +1,11 @@
 const fs = require('fs');
+const path = require('path');
 
-const markDownData = String(fs.readFileSync('js-questions.md'));
+const pathToREADME = path.join(__dirname, '/../data/js-questions.md');
+const pathToJSON = path.join(__dirname, '/../data/quizaData.json');
+
+console.log(pathToREADME);
+const markDownData = String(fs.readFileSync(pathToREADME));
 
 const data = markDownData.split('---');
 
@@ -41,4 +46,4 @@ const parsed = data.map((d, idx) => {
 
 });
 
-fs.writeFileSync('quizaData.json', JSON.stringify(parsed));
+fs.writeFileSync(pathToJSON, JSON.stringify(parsed));

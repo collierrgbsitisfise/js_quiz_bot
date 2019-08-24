@@ -8,14 +8,6 @@ client.on("error", function (err) {
 });
 
 
-// client.set('key', 'value!', 'EX', 100);
-// setTimeout(() => {
-//     client.get('key', (err, data) => {
-//         console.log('data');
-//         console.log(data);
-//     });
-// }, 2000);
-
 
 const getValuByKey = (key) => {
     return new Promise((res, rej) => {

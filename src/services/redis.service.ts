@@ -1,10 +1,5 @@
 import * as redis from 'redis';
 
-const client = redis.createClient();
-client.on("error", function (err) {
-    console.log("Error FROM REDIS " + err);
-});
-
 export class Redis {
     private host: string;
     private port: number;
@@ -33,7 +28,7 @@ export class Redis {
         }
         
         return new Promise((resolve: Function, reject: Function) => {
-            client.set(key, stringifiedValue, 'EX', expTimeInSec, (err: Error, data: string) => {
+            this.client.set(key, stringifiedValue, 'EX', expTimeInSec, (err: Error, data: string) => {
                 err ? reject(err) : resolve(data);
             });
         });
@@ -41,7 +36,7 @@ export class Redis {
 
     public getValueByKey(key: string): Promise<string>  {
         return new Promise((resolve: Function, reject: Function) => {
-            client.get(key, (err: Error, data: string) => {
+            this.client.get(key, (err: Error, data: string) => {
                 err ? reject(err) : resolve(data);
             });
         })

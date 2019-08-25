@@ -1,52 +1,15 @@
-// import fs from 'fs';
 import TelegramBot from 'node-telegram-bot-api';
-// import * as redis from 'redis';
-import { startHandler } from './handlers';
+import { startHandler, getQuestionHandler } from './handlers';
+import { Redis } from './services';
 
-// const client = redis.createClient();
-// client.on("error", function (err) {
-//     console.log("Error FROM REDIS " + err);
-// });
+const client = new Redis('localhost', 6379, (err: Error) => console.log('REDIS ERROR : ', err));
 
-
-
-// const getValuByKey = (key) => {
-//     return new Promise((res, rej) => {
-//         client.get(key, (err, data) => {
-//            res(data);
-//         });
-//     })
-// }
-
-// const allQuiz = JSON.parse(String(fs.readFileSync('./data/quizaData.json')));
 const botToken = process.env.tel_bot_token;
 
-// Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(botToken, { polling: true });
 
 bot.onText(/\/start/, startHandler(bot));
-
-// bot.onText(/get question/, async (msg) => {
-//     const chatId = msg.chat.id;
-//     const number = Math.floor(Math.random()*allQuiz.length);
-//     client.set(String(chatId), JSON.stringify(allQuiz[number]), 'EX', 60000 * 10);
-//     await bot.sendMessage(chatId, allQuiz[number]['question'], {parse_mode : "Markdown"});
-
-//     const jsCode = allQuiz[number]['jsCode'];
-//     if (jsCode) {
-//         await bot.sendMessage(chatId, jsCode, {parse_mode : "Markdown"});
-//     }
-
-//     for (let varaint of allQuiz[number]['answerVariants']) {
-//         await bot.sendMessage(chatId, varaint, {parse_mode : "Markdown"});
-//     }
-
-//     await bot.sendMessage(chatId, "Welcome", {
-//         "reply_markup": {
-//             "keyboard": [allQuiz[number]['answerVariants'].map(answ => answ.split(':').shift()), ["get question"]]
-//         }
-//     });
-// });
+bot.onText(/get question/, getQuestionHandler(bot, client));
 
 // //handle answer
 // bot.onText(/- (.+)/, async (msg, match) => {

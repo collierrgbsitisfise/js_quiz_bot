@@ -10,7 +10,7 @@ export const getQuestionHandler = (bot: TelegramBot, client: Redis) => {
     return async (msg: TelegramBot.Message): Promise<void> => {
         const chatId = msg.chat.id;
         const number = Math.floor(Math.random() * allQuiz.length);
-        client.setExpValue(String(chatId), JSON.stringify(allQuiz[number]), 60000 * 10);
+        client.setExpValue(String(chatId), JSON.stringify(allQuiz[number]), 60 * 5);
         await bot.sendMessage(chatId, allQuiz[number]['question'], { parse_mode: "Markdown" });
 
         const jsCode = allQuiz[number]['jsCode'];

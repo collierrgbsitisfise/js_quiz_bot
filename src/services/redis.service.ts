@@ -17,6 +17,7 @@ export class Redis {
     }
 
     public setExpValue(key: string, value: string | object | number, expTimeInSec: number): Promise<string> {
+        console.log('set EXP VALUE : ', expTimeInSec);
         let stringifiedValue = '';
 
         if (typeof value === 'number' || typeof value === 'undefined') {

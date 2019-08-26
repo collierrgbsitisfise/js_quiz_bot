@@ -6,7 +6,8 @@
   "scripts": {
     "parse-md-in-json": "node ./scripts/parse-readme-to-json.js",
     "start:dev": "nodemon ./src/app.ts",
-    "test": "node_modules/.bin/jest"
+    "test": "node_modules/.bin/jest",
+    "lint": "node_modules/.bin/tslint src/**/*.ts"
   },
   "repository": {
     "type": "git",

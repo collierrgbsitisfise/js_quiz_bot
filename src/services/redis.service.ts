@@ -1,4 +1,4 @@
-import * as redis from 'redis';
+import * as redis from "redis";
 
 export class Redis {
     private host: string;
@@ -13,34 +13,34 @@ export class Redis {
             port,
         });
 
-        this.client.on('error', errorHandler);
+        this.client.on("error", errorHandler);
     }
 
-    public setExpValue(key: string, value: string | object | number, expTimeInSec: number): Promise<string> {
-        console.log('set EXP VALUE : ', expTimeInSec);
-        let stringifiedValue = '';
+    public setExpValue(key: string, value: string | object | number, expTimeInSec: number): Promise<string | Error> {
+        console.log("set EXP VALUE : ", expTimeInSec);
+        let stringifiedValue = "";
 
-        if (typeof value === 'number' || typeof value === 'undefined') {
+        if (typeof value === "number" || typeof value === "undefined") {
             stringifiedValue = String(value);
-        } else if  (typeof value === 'object') {
+        } else if  (typeof value === "object") {
             stringifiedValue = JSON.stringify(value);
         } else {
             stringifiedValue = value;
         }
-        
-        return new Promise((resolve: Function, reject: Function) => {
-            this.client.set(key, stringifiedValue, 'EX', expTimeInSec, (err: Error, data: string) => {
+
+        return new Promise((resolve: (data: string) => void, reject: (err: Error) => void) => {
+            this.client.set(key, stringifiedValue, "EX", expTimeInSec, (err: Error, data: string) => {
                 err ? reject(err) : resolve(data);
             });
         });
     }
 
     public getValueByKey(key: string): Promise<string>  {
-        return new Promise((resolve: Function, reject: Function) => {
+        return new Promise((resolve: (data: string) => void, reject: (err: Error) => void) => {
             this.client.get(key, (err: Error, data: string) => {
                 err ? reject(err) : resolve(data);
             });
-        })
+        });
     }
 
     public getConnectionString(): string {

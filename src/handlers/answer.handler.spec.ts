@@ -1,5 +1,5 @@
 import TelegramBot from "node-telegram-bot-api";
-import { Redis } from "./../services";
+import { Redis } from "../services";
 import { answerHandler } from "./answer.handler";
 
 describe('Test "answer" handler', () => {

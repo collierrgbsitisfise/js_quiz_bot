@@ -7,7 +7,7 @@ export const answerHandler = (bot: TelegramBot, client: Redis) => {
         const resp = match[1];
 
         const quizQuestionData = await client.getValueByKey(String(chatId));
-
+        
         if (!quizQuestionData) {
             await bot.sendMessage(chatId, 'The time allotted for the answer has expired (5 min) 🕐🕐🕐🕐🕐!');
             return;

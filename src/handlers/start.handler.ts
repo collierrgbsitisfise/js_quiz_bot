@@ -5,7 +5,7 @@ export const startHandler = (bot: TelegramBot) => {
         const chatId = msg.chat.id;
         bot.sendMessage(chatId, "Welcome dude !!!", {
             reply_markup: {
-                keyboard: [["get question"]],
+                keyboard: [[{ text: "get question" }]],
             },
         });
     };

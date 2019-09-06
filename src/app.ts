@@ -4,7 +4,7 @@ import { Redis } from "./services";
 
 const {
     botToken,
-    redisHost,
+    redisHost = 'localhost',
     redisPort = 6379,
 } = process.env;
 

@@ -2,9 +2,13 @@ import TelegramBot from "node-telegram-bot-api";
 import { answerHandler, getQuestionHandler, startHandler } from "./handlers";
 import { Redis } from "./services";
 
-const botToken = process.env.tel_bot_token;
+const {
+    botToken,
+    redisHost,
+    redisPort = 6379,
+} = process.env;
 
-const client = new Redis("localhost", 6379, (err: Error) => console.log("REDIS ERROR : ", err));
+const client = new Redis(redisHost, +redisPort, (err: Error) => console.log("REDIS ERROR : ", err));
 const bot = new TelegramBot(botToken, { polling: true });
 
 bot.onText(/\/start/, startHandler(bot));

@@ -3,8 +3,6 @@ const path = require('path');
 
 const pathToREADME = path.join(__dirname, '/../data/js-questions.md');
 const pathToJSON = path.join(__dirname, '/../data/quizaData.json');
-
-console.log(pathToREADME);
 const markDownData = String(fs.readFileSync(pathToREADME));
 
 const data = markDownData.split('---');

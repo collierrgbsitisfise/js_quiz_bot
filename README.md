@@ -12,7 +12,7 @@
   - Select answer from provided variants
   ![Alt text](docs/getVariants.png?raw=true 'Title')
   - Receive correct answer with explanation
-  ![Alt text](docs/answerWithExplanation.pngraw=true 'Title')
+  ![Alt text](docs/answerWithExplanation.png?raw=true 'Title')
 
 #### Requirements !
 
